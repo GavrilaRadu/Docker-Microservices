@@ -1,0 +1,27 @@
+Nume: Gavrila Radu-Cristian
+Grupa: 344C3
+
+Comanda: docker compose up --build
+
+API-ul ruleaza pe portul 5000, deci testele din postman vor trebui rulate pe acest port. Pentru implementare am ales
+sa folosesc Python cu Flask (pentru api) si PostgreSQL (pentru baza de date). Baza de date se numeste 'database'
+si ne putem conecta la ea pe portul 5432 cu username-ul 'postgre' si parola 'postgre'. Pentru a putea administra
+si vizualiza baza de date am folosit adminer, astfel putand sa ne conectam din browser pe localhost:8000, impreuna cu
+credentialele mentionate mai sus.
+
+O problema pe care o putem avea este session timeout daca stam mereu conectati la baza de date si nu executam
+tranzactii asa ca aveam 2 variante:
+    - sa execut o tranzactie o data la ceva timp (nerecomandat)
+    - sa ne conectam la baza de date doar atunci cand avem ceva de executat
+
+Am ales a doua varianta, asa ca avem functiile 'connect_db' si 'close_db' pentru a face acest lucru. Numele functiilor
+ramase este destul de intuitiv pentru ce se executa in interiorul acesteia. Spre exemplu, daca primim o operatie
+de tip put pe tabela 'countries', am numit acea functie 'put_countries' :). Pentru a nu exista probleme de intelegere
+am lasat mai multe comentarii in codul sursa (/src/api.py).
+
+Dockerfile va instala tot de ce avem nevoie, utilizatorul avand nevoie doar de docker (cu docker compose) pentru a
+putea rula aplicatia.
+
+In ./db/init.sql avem create tabelele. Aceste tranzactii vor fi executate atunci cand rulam docker compose up --build.
+(linia '- ./db/init.sql:/docker-entrypoint-initdb.d/create_tables.sql' din docker-compose.yml). Aplicatia va crea un
+docker volume care se va numi <nume_folder>_postgres_db
