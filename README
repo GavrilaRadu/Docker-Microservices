@@ -1,6 +1,3 @@
-Nume: Gavrila Radu-Cristian
-Grupa: 344C3
-
 Comanda: docker compose up --build
 
 API-ul ruleaza pe portul 5000, deci testele din postman vor trebui rulate pe acest port. Pentru implementare am ales
